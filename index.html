@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="">
+</head>
+
+<body>
+  <canvas id="water_ball" width="200px" height="200px"></canvas>
+  <canvas id="water_ball1" width="150px" height="150px"></canvas>
+  <script type="text/javascript">
+    (function (w) {
+      function WaterBall(option) {
+        this.oCanvas = document.getElementById(option.id);
+        this.boxH = this.oCanvas.offsetHeight;
+        this.boxW = this.oCanvas.offsetWidth;
+        this.context = this.oCanvas.getContext('2d');
+        this.width = option.width;
+        this.height = option.height;
+        this.speed = option.speed / 100;
+        this.moveY = option.moveY;
+        this.moveX = 0;
+        var _this = this;
+        setInterval(function () {
+          _this.moveX += _this.speed;
+          _this.draw();
+        }, 50)
+      }
+      //描绘背景透明波浪
+      WaterBall.prototype.drawTransparentBack = function () {
+        var context = this.context;
+        var width = this.width;
+        var height = this.height;
+        var moveX = this.moveX;
+        var moveY = this.moveY;
+        var boxH = this.boxH;
+        var boxW = this.boxW;
+        context.beginPath();
+        context.globalCompositeOperation = "source-over";
+        for (var i = 0; i < boxH; i += 0.1) {
+          context.lineTo(i * width, height * Math.sin(i * width * 0.03 + moveX / 2.5) + height + moveY + 1);
+        }
+        context.lineTo(i * width, boxH);
+        context.lineTo(0, boxH);
+        var my_gradient = context.createLinearGradient(0, 0, 0, boxH);
+        my_gradient.addColorStop(0, "rgba(11,255,235,0.3)");
+        my_gradient.addColorStop(1, "rgba(0,174,255,0.3)");
+        context.fillStyle = my_gradient;
+        context.fill();
+        context.closePath();
+      }
+      //描绘前景波浪
+      WaterBall.prototype.drawBack = function () {
+        var context = this.context;
+        var width = this.width;
+        var height = this.height;
+        var moveX = this.moveX;
+        var moveY = this.moveY;
+        var boxH = this.boxH;
+        var boxW = this.boxW;
+        context.beginPath();
+        context.globalCompositeOperation = "source-over";
+        for (var i = 0; i < boxH; i += 0.1) {
+          context.lineTo(i * width, height * Math.sin(i * width * 0.03 + moveX) + height + moveY + 1);
+        }
+        context.lineTo(i * width, boxH);
+        context.lineTo(0, boxH);
+        var my_gradient = context.createLinearGradient(0, 0, 0, boxH);
+        my_gradient.addColorStop(0, "rgba(11,255,235,1)");
+        my_gradient.addColorStop(1, "rgba(0,174,255,1)");
+        context.fillStyle = my_gradient;
+        context.fill();
+        context.closePath();
+      }
+      //描绘圆
+      WaterBall.prototype.drawArc = function () {
+        var context = this.context;
+        var width = this.width;
+        var height = this.height;
+        var moveX = this.moveX;
+        var moveY = this.moveY;
+        var boxH = this.boxH;
+        var boxW = this.boxW;
+        context.beginPath();
+        context.globalCompositeOperation = "destination-in";
+        context.arc(boxW / 2, boxH / 2, boxW / 2, 0, 2 * Math.PI);
+        context.fill();
+        context.closePath();
+      }
+      //描绘
+      WaterBall.prototype.draw = function () {
+        var boxH = this.boxH;
+        var boxW = this.boxW;
+        this.context.clearRect(0, 0, boxW, boxH)
+        this.drawTransparentBack();
+        this.drawBack();
+        this.drawArc();
+      }
+
+      w.WaterBall = WaterBall;
+
+    })(window);
+
+    var option = {
+      id: 'water_ball',
+      width: 10,
+      height: 10,
+      moveX: 0,
+      moveY: 50,
+      speed: 10
+    }
+    var option1 = {
+      id: 'water_ball1',
+      width: 10,
+      height: 10,
+      moveX: 0,
+      moveY: 50,
+      speed: 10
+    }
+
+    new WaterBall(option)
+    new WaterBall(option1)
+
+  </script>
+</body>
+
+</html>
