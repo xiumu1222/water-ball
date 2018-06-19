@@ -34,7 +34,7 @@
       moveX: 0,
       moveY: 50,
       speed: 10,
-      clickHandle:function(val){
+      clickHandle: function (val) {
         alert(1)
       }
     }
@@ -43,16 +43,16 @@
       moveX: 0,
       moveY: 50,
       speed: 30,
-      clickHandle:function(val){
+      clickHandle: function (val) {
         alert(2)
       }
     }
     var option2 = {
       id: 'water_ball2',
       moveX: 0,
-      moveY: 50,
+      moveY: 100,
       speed: 15,
-      clickHandle:function(val){
+      clickHandle: function (val) {
         alert(1)
       }
     }
@@ -92,7 +92,9 @@
       moveY: 50,
       speed: 10
     }
-
+    WaterBall.prototype.clickHandle = function () {
+      this.speed += 0.1
+    }
 
     var a = new WaterBall(option);
     a.init();

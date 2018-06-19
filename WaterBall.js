@@ -2,19 +2,22 @@
 (function (w) {
   function WaterBall(option) {
     this.oCanvas = document.getElementById(option.id);
+    this.context = this.oCanvas.getContext('2d');
     this.boxH = this.oCanvas.offsetHeight;
     this.boxW = this.oCanvas.offsetWidth;
     this.radius = this.boxH > this.boxW ? this.boxW : this.boxH
-    this.context = this.oCanvas.getContext('2d');
     this.width = 10;
     this.height = 10;
     this.speed = option.speed / 100;
-    this.moveY = option.moveY;
+    this.moveY = 0;
     this.moveX = 0;
+    this.timeGogogo = '';
+    this.moveYAdd = 4;
+    this.moveYMax = option.moveY;
   }
 
   //开放点击事件
-  WaterBall.prototype.clickHandle = function(){
+  WaterBall.prototype.clickHandle = function () {
     alert(1)
   }
   //描绘背景透明波浪
@@ -81,6 +84,7 @@
     var radius = this.radius;
 
     this.context.clearRect(0, 0, radius, radius)
+
     this.drawTransparentBack();
     this.drawBack();
     this.drawArc();
@@ -91,10 +95,15 @@
     _this.oCanvas.onclick = function () {
       _this.clickHandle()
     };
-    setInterval(function () {
+    _this.timeGogogo = setInterval(function () {
       _this.moveX += _this.speed;
+      _this.moveY < _this.moveYMax ? (_this.moveY += _this.moveYAdd) : _this.moveY = _this.moveYMax;
       _this.draw();
     }, 50)
+  }
+  //销毁
+  WaterBall.prototype.dispose = function () {
+    clearInterval(this.timeGogogo)
   }
 
   w.WaterBall = WaterBall;
